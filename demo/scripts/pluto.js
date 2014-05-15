@@ -23,6 +23,7 @@ var
 	, RUN = false
 	//load script function
 	, LOAD
+	//undefined
 	, UNDEF
 	;
 
@@ -117,9 +118,7 @@ task.prototype = {
 		delete this.modules;
 	},
 	load : function(endCall){
-		var _ = this;
-		var mod;
-		var _args = [];
+		var _ = this, _args = [];
 
 		function load(){
 			if(_.modules.length < 1){
