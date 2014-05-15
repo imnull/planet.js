@@ -35,7 +35,7 @@ planet.js最初是受到require.js的启发，但是require.js过于庞大，对
 ---------------
 ## 使用方法：
 
-### 页面饮用
+### 页面引用
 
     <script type="text/javascript"
         src="scripts/pluto.js"
