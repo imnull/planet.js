@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<!-- <script type="text/javascript" src="scripts/planet.js" data-main="config-local.js"></script> -->
+
+<script type="text/javascript" src="scripts/util/base.js"></script>
+<script type="text/javascript" src="scripts/util/type.js"></script>
+<script type="text/javascript" src="scripts/util/type-ext.js"></script>
+<script type="text/javascript" src="scripts/util/css.js"></script>
+<script type="text/javascript" src="scripts/util/schema.js"></script>
+<script type="text/javascript" src="scripts/ui/ui.js"></script>
+<script type="text/javascript" src="scripts/ui/tmaker.js"></script>
+<script type="text/javascript" src="scripts/ui/template.js"></script>
+
+</head>
+
+<body>
+
+<pre></pre>
+
+
+<script type="text/javascript">
+
+
+
+var d = {
+	div : {
+		html : 'div-html',
+		'+': 2
+	},
+	a : ['em', {
+		html : 'span'
+	}, {
+		html : 'a-html',
+		'>' : [{
+			'em' : 'aaa'
+		}, 'label']
+	}],
+	span : [10, '2', '3']
+}
+
+
+var tm = new TMaker();
+var r = tm.parse(d, function(err){
+	console.log(err)
+});
+document.body.appendChild(r);
+
+
+
+
+
+</script>
+
+</body>
+
+
+</html>

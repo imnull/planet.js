@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script type="text/javascript" src="scripts/pluto.js" data-main="config-local.js"></script>
+
+
+</head>
+
+<body>
+
+<pre></pre>
+
+
+<script type="text/javascript">
+
+require(['ui/tmaker'], function(TMaker){
+
+var d = {
+	div : {
+		html : 'div-html',
+		'+': 2
+	},
+	a : ['em', {
+		html : 'span'
+	}, {
+		html : 'a-html',
+		'>' : [{
+			'em' : 'aaa'
+		}, 'label']
+	}],
+	span : [10, '2', '3']
+}
+
+
+var tm = new TMaker();
+var r = tm.parse(d, function(err){
+	console.log(err)
+});
+document.body.appendChild(r);
+
+})
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+
+
+</html>

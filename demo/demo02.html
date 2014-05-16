@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script type="text/javascript" src="scripts/pluto.js" data-main="config-local.js"></script>
+
+<!-- <script type="text/javascript" src="scripts/util/base.js"></script>
+<script type="text/javascript" src="scripts/util/type.js"></script>
+<script type="text/javascript" src="scripts/util/css.js"></script>
+<script type="text/javascript" src="scripts/util/schema.js"></script>
+<script type="text/javascript" src="scripts/ui/ui.js"></script> -->
+
+</head>
+
+<body>
+
+<pre></pre>
+
+
+<script type="text/javascript">
+
+require('ui/ui', function(UI){
+	
+	var ui = new UI();
+
+	var r = ui.parse({
+		node : 'div',
+		style : {
+			backgroundColor : '#ccc',
+			width : 500,
+			height : 200
+		},
+		properties : {
+			onclick : function(e){
+				alert((e.target || e.srcElement).nodeName)
+			}
+		},
+		children : {
+			node : 'a',
+			style : {
+				display : 'block',
+				border: '1px solid #555',
+				margin: 3,
+				padding: 10,
+				backgroundColor : '#eee',
+				cursor : 'pointer'
+			},
+			properties : {
+				href : 'javascript:void(0)',
+				innerHTML : function(index, p){
+					return index + '.' + p + '=' + index;
+				},
+				onmouseover : function(){
+					this.style.backgroundColor = '#fff';
+				},
+				onmouseout : function(){
+					this.style.backgroundColor = '#eee';
+				}
+			},
+			repeat : 3
+		}
+	}, function(err){
+		alert(err)
+	});
+
+	document.body.appendChild(r)
+})
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+
+
+</html>

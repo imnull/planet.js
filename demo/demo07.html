@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style type="text/css">
+
+/*.planet_album_01{
+	height: 470px;
+	width:620px;
+	overflow: hidden;
+}*/
+
+.planet_album_01 ul,
+.planet_album_01 li
+{
+	padding: 0px;
+	margin: 0px;
+	list-style: none;
+}
+.planet_album_01 img{
+	border: 1px solid #000;
+	padding: 4px;
+}
+
+.planet_album_01 .view,
+.planet_album_01 .thumb
+{
+	height: 470px;
+	overflow: hidden;
+	float: left;
+}
+.planet_album_01 .view{
+	width: 500px;
+}
+.planet_album_01 .view li{
+	width:500px;
+	height: 470px;
+	overflow: hidden;
+	float: left;
+}
+.planet_album_01 .view img{
+	width:485px;
+	height: 460px;
+}
+
+
+/*.planet_album_01 .thumb{
+	width: 120px;
+}
+.planet_album_01 .thumb li{
+	width:120px;
+	height: 95px;
+	overflow: hidden;
+	float: left;
+}
+.planet_album_01 .thumb img{
+	width:110px;
+	height: 80px;
+}*/
+
+
+</style>
+
+
+<script type="text/javascript" src="scripts/pluto.js" data-main="config-local"></script>
+
+</head>
+
+<body>
+
+<pre></pre>
+
+
+<script type="text/javascript">
+
+function padding(s, len, ch, left){
+	return len > s.length
+		? (s = [Array(len - s.length + 1).join(ch), s]).length && !left
+			? s.join('')
+			: s.reverse().join('')
+		: s;
+}
+function numberFormat(fmt, num){
+	num += '';
+	return fmt.replace(/#+/g, function(m){
+		return padding(num, m.length, '0');
+	});
+}
+function numberList(fmt, start, end){
+	var arr = [];
+	for(; start <= end; start++){
+		arr.push(numberFormat(fmt, start));
+	}
+	return arr;
+}
+
+var thumbs = numberList('images/thumb##.gif', 1, 4);
+
+require(['util/base', 'util/type', 'util/css', 'util/schema', 'ui/template-maker'], function(Base, Type, CSS, Schema, TemplateMaker){
+
+	var data_schema = function(d){
+		var arr = [];
+		Base.EACH(d, function(v){
+			arr.push({ text : v, url : v });
+		});
+		return arr;
+	}
+
+	var data = Schema.convert(thumbs, data_schema);
+
+	var css_config = {
+		separate : 0.85,
+		spliter : 5,
+		image : {
+			padding : 4,
+			borderWidth : 1,
+			borderColor : '#000',
+			borderStyle : 'solid',
+		},
+
+		outer : {
+			width : 620,
+			height : 470,
+			overflow : 'hidden'
+		}
+	};
+
+	var css_thumb = {
+		width : Math.round(css_config.outer.width * (1 - css_config.separate)),
+		height : Math.round(css_config.outer.height / data.length)
+	};
+	var css_view = {
+		width : css_config.outer.width - css_thumb.width,
+		height : css_config.outer.height - css_thumb.height
+	};
+	var css_view_img = Type.Mix({
+		width : css_view.width
+			- css_config.image.borderWidth * 2
+			- css_config.image.padding * 2
+			- css_config.spliter,
+		height : css_view.height
+			- css_config.image.borderWidth * 2
+			- css_config.image.padding * 2
+	}, css_config.image);
+
+	var css_thumb_img = Type.Mix({
+		width : css_thumb.width
+			- css_config.image.borderWidth * 2
+			- css_config.image.padding * 2,
+		height : css_thumb.height
+			- css_config.image.borderWidth * 2
+			- css_config.image.padding * 2
+	}, css_config.image);
+	
+	var thumb_tpl = {
+		li : {
+			'>' : {
+				a : {
+					href : '{url}',
+					title : '{text}',
+					target : '_blank',
+					'~' : 'thumb'
+				}
+			},
+			css : css_thumb
+		}
+	};
+	var view_tpl = {
+		li : {
+			'>' : {
+				a : {
+					href : '{url}',
+					title : '{text}',
+					target : '_blank',
+					'~' : 'view'
+				}
+			}
+		}
+	};
+
+	var invoker = {
+		thumb : function(data, node, index){
+
+			var img = new Image();
+			img.alt = data.text;
+			img.src = data.url;
+			img.style.cssText = CSS.obj2css(css_thumb_img);
+			node.appendChild(img);
+
+			var idx = index[0];
+
+			node.onmouseover = function(){
+				var view = this.parentNode.parentNode.previousSibling;
+				view.scrollTop = idx * 470;
+			}
+		},
+		view : function(data, node, index){
+			var img = new Image();
+			img.alt = data.text;
+			img.src = data.url;
+			node.appendChild(img);
+		}
+	}
+
+	var container = document.createElement('div');
+	container.className = 'planet_album_01';
+
+	var view_ul = container.appendChild(document.createElement('ul'));
+	view_ul.className = 'view'
+
+	var thumb_ul = container.appendChild(document.createElement('ul'));
+	thumb_ul.className = 'thumb'
+	
+
+	new TemplateMaker(view_tpl, data, invoker).appendTo(view_ul);
+	new TemplateMaker(thumb_tpl, data, invoker, function(err){ console.log(err) }).appendTo(thumb_ul);
+
+	document.body.appendChild(container)
+
+});
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+
+
+</html>

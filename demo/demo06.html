@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script type="text/javascript" src="scripts/pluto.js" data-main="config-local"></script>
+
+
+</head>
+
+<body>
+
+<pre></pre>
+
+
+<script type="text/javascript">
+
+require(['ui/template-maker'], function(TemplateMaker){
+
+var config = {
+	h1 : {
+		'html' : '{title}',
+		'css' : {
+			'border' : '3px solid #fa0',
+			'cursor': 'pointer'
+		},
+		'~': 'head---',
+		'>': {
+			a : {
+				html : '---{link.text}',
+				href : '{link.url}',
+				target : '_blank'
+			}
+		}
+	},
+	h2 : {
+		'html' : '{sub.title}',
+		'style' : 'border:3px solid #00f;cursor:pointer;',
+		'template-invoker': 'head',
+		'children' : {
+			em : ' --- im EM',
+			span : ' ------ im SPAN'
+		}
+	}
+}
+
+var inv = {
+	head : function(data, node, pos){
+		node.onclick = function(e){
+			e = e || window.event;
+			alert((e.target || e.srcElement).nodeName + ' in ' + node.nodeName + ' [' + pos + ']')
+		}
+	}
+}
+var data = {
+	title : 'title',
+	sub : { title : 'subtitle' },
+	link : {
+		text : 'link-text-here',
+		url : 'javascript:void(0)'
+	}
+};
+
+var r = new TemplateMaker(config, [data, data, data], inv);
+r.appendTo(document.body);
+
+})
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+
+
+</html>
