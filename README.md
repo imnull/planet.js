@@ -103,5 +103,7 @@ jQuery支持
 
 配置文件应与loader处于相同路径。
 
+nanana....
+
 
 
