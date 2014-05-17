@@ -8,7 +8,7 @@
  * Blog : mkjs.net
  */
 
-(function(w){
+(function(w, C){
 
 	/*
 	 * Object遍历对象
@@ -77,14 +77,13 @@
 		return false;
 	}
 
-	var ASL = Array.prototype.slice;
 	/*
 	 * 切割数组。主要用于切分Arguments对象
 	 * @a<Array>: 原始数组
 	 * @idx<int>: 起始索引
 	 */
 	function SLICE(a, idx){
-		return ASL.call(a, idx || 0);
+		return C.call(a, idx || 0);
 	}
 
 	/*
@@ -100,6 +99,51 @@
 			: domain(ns.substr(i + 1), ctx[ns.substr(0, i)]);
 	}
 
+	/*
+	 * 填充指定长度字符串
+	 * @s<string> 原始字符串
+	 * @len<int> 指定长度
+	 * @ch<string> 填充字符
+	 * @left<bool> 填充至左侧
+	 */
+	function padding(s, len, ch, left){
+		return len > s.length
+			? (s = [Array(len - s.length + 1).join(ch), s]).length && !left
+				? s.join('')
+				: s.reverse().join('')
+			: s;
+	}
+
+	/*
+	 * 格式化字符串
+	 * 如：thumb###。
+	 * 当数字不足3位，则使用ch填充到左侧
+	 * @fmt<string> 格式字符串
+	 * @s<any> 原始字符串
+	 * @ch<string> 填充字符串，默认为 '-'
+	 */
+	function format(fmt, s, ch){
+		ch = ch || '-';
+		s += '';
+		return fmt.replace(/#+/g, function(m){
+			return padding(s, m.length, ch);
+		});
+	}
+
+	/*
+	 * 使用格式化字符串形成一个数字数组
+	 * @fmt<string> 格式化字符串
+	 * @s<int> 开始值(start)
+	 * @e<int> 结束值(end)
+	 */
+	function numberList(fmt, s, e){
+		var arr = [];
+		for(; s <= e; s++){
+			arr.push(format(fmt, s, '0'));
+		}
+		return arr;
+	}
+
 	var Base = {
 		each: each,
 		every: every,
@@ -108,13 +152,16 @@
 		EVERY: EVERY,
 		SOME: SOME,
 		SLICE: SLICE,
-		domain: domain
+		domain: domain,
+		padding: padding,
+		format: format,
+		numberList : numberList
 	};
 
 	if(typeof(w.define) == 'function'){
-		w.define('Base', ['util/__base__.js'], Base);
+		w.define('Base', [], Base);
 	} else {
 		w.Base = Base;
 	}
 
-})(window)
+})(window, Array.prototype.slice)

@@ -50,7 +50,7 @@
 					if(Type.isObject(invoker_context)){
 						var fn = Base.domain(n.nodeValue, invoker_context);
 						if(Type.isFunction(fn)){
-							fn(data, N, index);
+							fn.apply(invoker_context, [data, N, index]);
 						}
 					}
 				} else {
