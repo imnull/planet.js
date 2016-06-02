@@ -8,6 +8,8 @@
  * Blog : mkjs.net
  */
 
+//测试 git push
+
 (function (w, D, S, C) {
 
 var
